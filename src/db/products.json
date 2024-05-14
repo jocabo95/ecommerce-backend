@@ -1,0 +1,42 @@
+[
+  {
+    "title": "mojarra",
+    "description": "frita con camaron",
+    "category": "pejcao frejco",
+    "code": "mjarrita sistema solar",
+    "price": 15000,
+    "stock": 4,
+    "id": "c000a1f5-d0eb-4ca9-891b-883a2b266fa8",
+    "status": true
+  },
+  {
+    "title": "audifonos",
+    "description": "quiet comfort",
+    "category": "audio",
+    "code": "001-222d",
+    "price": 15000,
+    "stock": 4,
+    "id": "eac643e5-514d-497b-b919-a1202c07df0c",
+    "status": true
+  },
+  {
+    "title": "cuaderno",
+    "description": "hojas de marfil",
+    "category": "escritura",
+    "code": "001-938j",
+    "price": 1000,
+    "stock": 5,
+    "id": "67235ad2-fbcf-4755-ac03-271d9fbe89fb",
+    "status": true
+  },
+  {
+    "title": "chipi",
+    "description": "perro canequero",
+    "category": "animal",
+    "code": "001-woof",
+    "price": 80,
+    "stock": 5,
+    "id": "4230a5b9-4db0-4281-aa48-aa49f0232713",
+    "status": true
+  }
+]
