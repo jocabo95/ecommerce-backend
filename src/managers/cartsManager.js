@@ -2,7 +2,6 @@ import ProductManager from "./productManager.js";
 import { __dirname } from "../path.js";
 import fs from "fs";
 import { v4 as uuidv4, v4 } from "uuid";
-import { error } from "console";
 
 const productManager = new ProductManager(`${__dirname}/db/products.json`);
 

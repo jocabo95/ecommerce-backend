@@ -5,7 +5,7 @@ import { validateProduct } from "../middlewares/validateAddedProduct.js";
 const router = Router();
 const productManager = new ProductManager("./src/db/products.json");
 
-// bring all products
+// GET ALL PRODUCTS
 router.get("/", async (req, res) => {
   try {
     // limit refers to # of products that will be displayed in client
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// get product by id
+// GET PRODUCT BY ID
 router.get("/:prodId", async (req, res) => {
   try {
     const { prodId } = req.params;
@@ -37,7 +37,7 @@ router.get("/:prodId", async (req, res) => {
   }
 });
 
-// add product
+// ADD PRODUCT
 router.post("/", validateProduct, async (req, res) => {
   try {
     const productInfo = req.body;
@@ -48,7 +48,7 @@ router.post("/", validateProduct, async (req, res) => {
   }
 });
 
-// update product
+// UPDATE PRODUCT
 router.put("/:prodId", async (req, res) => {
   try {
     const { prodId } = req.params;
@@ -73,7 +73,7 @@ router.put("/:prodId", async (req, res) => {
   }
 });
 
-// delete prod
+// REMOVE PRODUCT
 router.delete("/:prodId", async (req, res) => {
   try {
     const { prodId } = req.params;

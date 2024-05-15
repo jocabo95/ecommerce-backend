@@ -133,11 +133,3 @@ export default class ProductManager {
   }
 }
 
-const prod1 = {
-  title: "efwfwe",
-  description: "reusable water bottle",
-  category: "outdoors",
-  code: "ndoss",
-  price: 150,
-  stock: 4,
-};

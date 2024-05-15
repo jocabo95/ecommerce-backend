@@ -6,6 +6,7 @@ import { __dirname } from "../path.js";
 const router = Router();
 const cartManager = new CartManager(`${__dirname}/db/carts.json`)
 
+// CREATE CART
 router.post('/', async (req,res)=>{
   try {
     res.json(await cartManager.createCart());
@@ -14,6 +15,7 @@ router.post('/', async (req,res)=>{
   }
 })
 
+// GET PRODUCTS WITH CART ID
 router.get('/:cartId', async(req,res)=>{
   try {
     const {cartId} = req.params
@@ -31,6 +33,7 @@ router.get('/:cartId', async(req,res)=>{
   }
 })
 
+// ADD PRODUCT TO CART
 router.post('/:cartId/product/:prodId', async (req,res)=>{
 try {
   const {cartId} = req.params;
