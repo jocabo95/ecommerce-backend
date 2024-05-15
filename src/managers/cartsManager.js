@@ -20,7 +20,7 @@ class CartManager {
         return [];
       }
     } catch (error) {
-      console.log(`could not get carts`);
+      console.log(`could not get carts`, error)
     }
   }
 
@@ -39,7 +39,7 @@ class CartManager {
 
       return newCart;
     } catch (error) {
-      console.log(`could not create cart`);
+      console.log(`could not create cart`, error);
     }
   }
 
@@ -54,7 +54,7 @@ class CartManager {
         return null;
       }
     } catch (error) {
-      console.log(`could not get cart with id: ${cartId}`);
+      console.log(`could not get cart with id: ${cartId}`, error);
     }
   }
 
@@ -104,6 +104,7 @@ class CartManager {
         return selectedCart;
       } else {
         throw new Error(`Product or cart dont exist`);
+        
       }
     } catch (error) {
       console.log(`could not add product (${prodId}) to cart (${cartId})`);

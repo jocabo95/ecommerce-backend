@@ -1,3 +1,4 @@
+import { error } from "console";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 
@@ -22,7 +23,7 @@ export default class ProductManager {
         return [];
       }
     } catch (error) {
-      console.log("getProducts()= couldnt get products");
+      console.log("getProducts()= couldnt get products", error);
     }
   }
 
@@ -55,7 +56,7 @@ export default class ProductManager {
         console.log("product title already exists");
       }
     } catch (error) {
-      console.log(`could not add product`);
+      console.log(`could not add product`, error);
     }
   }
 
@@ -70,7 +71,7 @@ export default class ProductManager {
         return null;
       }
     } catch (error) {
-      console.log(`product with id ${id} doesnt exist`);
+      console.log(`product with id ${id} doesnt exist`, error);
     }
   }
 
@@ -89,7 +90,7 @@ export default class ProductManager {
         return null;
       }
     } catch (error) {
-      console.log("could not delete product");
+      console.log("could not delete product", error);
     }
   }
 
@@ -126,9 +127,10 @@ export default class ProductManager {
         console.log(
           `product with id ${id} cant be edited because it does not exist`
         );
+        return null
       }
     } catch (error) {
-      console.log(`could not modify product with id= ${id}`);
+      console.log(`could not modify product with id= ${id}`, error);
     }
   }
 }
