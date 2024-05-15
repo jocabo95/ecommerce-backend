@@ -31,5 +31,12 @@ router.get('/:cartId', async(req,res)=>{
   }
 })
 
+router.post('/:cartId/product/:prodId', async (req,res)=>{
+try {
+
+} catch (error) {
+  res.status(500).json({error: `could not add product (${prodId}) to cart (${cartId})`})
+}
+})
 
 export default router;

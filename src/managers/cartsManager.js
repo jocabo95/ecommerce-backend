@@ -59,43 +59,10 @@ class CartManager {
     }
   }
 
-  async addProductToCart(prodId, cartId) {}
+  async addProductToCart(prodId, cartId) {
+  }
 }
 
 export default CartManager;
 
-// try {
-//   // check that cart and product both exist
-//   const productToAdd = await productManager.getProductById(prodId);
-//   const cartToModify = await this.getCartById(cartId);
 
-//   if (productToAdd && cartToModify) {
-//     // define product info
-//     const product = {
-//       id: productToAdd.id,
-//       quantity: 1,
-//     };
-
-//     // push product to cart
-//     let modifiedCart = cartToModify.products.push(product);
-
-//     // get carts
-//     let myCarts = await this.getCarts();
-
-//     // filter out cart to modify
-//     let myCartsmodified = myCarts.filter((el) => el.id !== cartToModify.id);
-
-//     // push cart to myCarts
-//     myCartsmodified.push(modifiedCart);
-
-//     await fs.promises.writeFile(this.path, JSON.stringify(myCartsmodified));
-
-//     return modifiedCart;
-//   } else {
-//     console.log(
-//       `product (id: ${prodId}) or cart (id: ${cartId}) do not exist`
-//     );
-//   }
-// } catch (error) {
-//   console.log(`could not add product (${prodId}) to cart (${cartId})`);
-// }
