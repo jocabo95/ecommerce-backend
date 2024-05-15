@@ -23,7 +23,7 @@ router.get('/:cartId', async(req,res)=>{
     let desiredCart = await cartManager.getCartById(cartId)
 
     if(desiredCart){
-      res.json(desiredCart.products);
+      res.json(desiredCart);
     }
         
   } catch (error) {
