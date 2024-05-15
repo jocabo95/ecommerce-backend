@@ -11,7 +11,7 @@ router.post('/', async (req,res)=>{
   try {
     res.json(await cartManager.createCart());
   } catch (error) {
-    res.status(500)
+    res.status(500).json({error: `could not create cart`})
   }
 })
 
@@ -21,13 +21,11 @@ router.get('/:cartId', async(req,res)=>{
     const {cartId} = req.params
 
     let desiredCart = await cartManager.getCartById(cartId)
-    console.log('desiredCart', desiredCart);
+
     if(desiredCart){
       res.json(desiredCart.products);
-    }else{
-      return null
     }
-    
+        
   } catch (error) {
     res.status(500).json({error: `could not get cart with id ${cartId}`})
   }

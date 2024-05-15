@@ -27,13 +27,9 @@ router.get("/:prodId", async (req, res) => {
     // act weather product exists or not
     if (product) {
       res.status(200).json(product);
-    } else {
-      res
-        .status(500)
-        .json({ error: `product wit id ${prodId} does not exist` });
     }
   } catch (error) {
-    res.status(500).json({ error: `could not get product with id ${prodId}` });
+    res.status(500).json({ error: `could not get product` });
   }
 });
 
@@ -61,10 +57,6 @@ router.put("/:prodId", async (req, res) => {
 
     if (updatedProduct) {
       res.status(200).json(updatedProduct);
-    } else {
-      res
-        .status(500)
-        .json({ error: `could not update product with id ${prodId}` });
     }
   } catch (error) {
     res
@@ -81,10 +73,6 @@ router.delete("/:prodId", async (req, res) => {
 
     if (newProductList) {
       res.status(200).json(newProductList);
-    } else {
-      res
-        .status(500)
-        .json({ error: `could not detele product with id ${prodId}` });
     }
   } catch (error) {
     res

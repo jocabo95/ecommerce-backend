@@ -80,7 +80,7 @@ class CartManager {
           selectedCart.products.push(prodInfo);
         } else {
           //! else add ++ to product quantity
-          selectedCart.products.map(async (prod) => {
+          selectedCart.products.forEach((prod) => {
             if (prod.id === productToAdd.id) {
               prod.quantity++;
             }
@@ -104,7 +104,6 @@ class CartManager {
         return selectedCart;
       } else {
         throw new Error(`Product or cart dont exist`);
-        
       }
     } catch (error) {
       console.log(`could not add product (${prodId}) to cart (${cartId})`);
