@@ -33,7 +33,12 @@ router.get('/:cartId', async(req,res)=>{
 
 router.post('/:cartId/product/:prodId', async (req,res)=>{
 try {
+  const {cartId} = req.params;
+  const {prodId} = req.params;
 
+  let modifiedCart = await cartManager.addProductToCart(prodId, cartId)
+
+  res.status(200).json(modifiedCart)
 } catch (error) {
   res.status(500).json({error: `could not add product (${prodId}) to cart (${cartId})`})
 }

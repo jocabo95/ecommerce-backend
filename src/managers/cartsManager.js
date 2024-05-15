@@ -2,6 +2,7 @@ import ProductManager from "./productManager.js";
 import { __dirname } from "../path.js";
 import fs from "fs";
 import { v4 as uuidv4, v4 } from "uuid";
+import { error } from "console";
 
 const productManager = new ProductManager(`${__dirname}/db/products.json`);
 
@@ -45,24 +46,70 @@ class CartManager {
 
   async getCartById(cartId) {
     try {
-      const myCarts = await this.getCarts()
-      const desiredCart = myCarts.find((el)=> el.id === cartId)
+      const myCarts = await this.getCarts();
+      const desiredCart = myCarts.find((el) => el.id === cartId);
 
-      if(desiredCart){
-        return desiredCart
-      }else{
-        return null
+      if (desiredCart) {
+        return desiredCart;
+      } else {
+        return null;
       }
-
     } catch (error) {
       console.log(`could not get cart with id: ${cartId}`);
     }
   }
 
   async addProductToCart(prodId, cartId) {
+    try {
+      //! check if cart and product already exist
+      const selectedCart = await this.getCartById(cartId);
+      const productToAdd = await productManager.getProductById(prodId);
+
+      if (selectedCart && productToAdd) {
+        //! check if cart.products already contain product
+        const checkProductInCart = selectedCart.products.find((el) => {
+          return el.id === productToAdd.id;
+        });
+
+        //! if not: create obj with product info push product to cart.prod
+        if (!checkProductInCart) {
+          const prodInfo = {
+            id: productToAdd.id,
+            quantity: 1,
+          };
+
+          selectedCart.products.push(prodInfo);
+        } else {
+          //! else add ++ to product quantity
+          selectedCart.products.map(async (prod) => {
+            if (prod.id === productToAdd.id) {
+              prod.quantity++;
+            }
+          });
+        }
+
+        //! get all carts
+        const myCarts = await this.getCarts();
+
+        //! get all carts and filter out modified cart
+        const myCartsmodified = myCarts.filter(
+          (el) => el.id !== selectedCart.id
+        );
+
+        //! push new cart
+        myCartsmodified.push(selectedCart);
+
+        //! write file
+        await fs.promises.writeFile(this.path, JSON.stringify(myCartsmodified));
+
+        return selectedCart;
+      } else {
+        throw new Error(`Product or cart dont exist`);
+      }
+    } catch (error) {
+      console.log(`could not add product (${prodId}) to cart (${cartId})`);
+    }
   }
 }
 
 export default CartManager;
-
-
