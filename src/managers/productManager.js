@@ -54,7 +54,9 @@ export default class ProductManager {
       } else {
         console.log("product title already exists");
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(`could not add product`);
+    }
   }
 
   async getProductById(id) {

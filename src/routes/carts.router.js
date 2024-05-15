@@ -1,7 +1,35 @@
-import { Router } from "express";
+import { Router, json } from "express";
+import CartManager from "../managers/cartsManager.js";
+import { __dirname } from "../path.js";
+
 
 const router = Router();
+const cartManager = new CartManager(`${__dirname}/db/carts.json`)
 
-router.get("/", (req, res) => {});
+router.post('/', async (req,res)=>{
+  try {
+    res.json(await cartManager.createCart());
+  } catch (error) {
+    res.status(500)
+  }
+})
+
+router.get('/:cartId', async(req,res)=>{
+  try {
+    const {cartId} = req.params
+
+    let desiredCart = await cartManager.getCartById(cartId)
+    console.log('desiredCart', desiredCart);
+    if(desiredCart){
+      res.json(desiredCart.products);
+    }else{
+      return null
+    }
+    
+  } catch (error) {
+    res.status(500).json({error: `could not get cart with id ${cartId}`})
+  }
+})
+
 
 export default router;
