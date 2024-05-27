@@ -12,7 +12,22 @@ router.get("/", async (req, res) => {
     const { limit } = req.query;
 
     const productList = await productManager.getProducts(limit);
-    res.status(200).json(productList);
+
+    console.log("list: ", productList);
+
+    // render with handlebars
+    res.render('index', {productList});
+  } catch (error) {
+    res.status(500).json({ error: "could not get product list" });
+  }
+});
+
+// SHOW PRODUCTS REALTIME
+router.get("/realtimeProducts", async (req, res) => {
+  try {
+
+    // render with handlebars
+    res.render('realtimeProducts');
   } catch (error) {
     res.status(500).json({ error: "could not get product list" });
   }
