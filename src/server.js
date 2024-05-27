@@ -7,13 +7,15 @@ import { Server } from "socket.io";
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static(`${__dirname}/public`))
 
 // handlebars middleware
 app.engine("handlebars", handlebars.engine());
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.use("/api/products", productsRouter);
@@ -31,7 +33,5 @@ socketServer.on("connection", (socket)=>{
 
   console.log(`new client ${socket.id}`);
 
-  socket.on("hellofromfront", (arg)=>{
-    console.log(arg);
-  });
+
 })
