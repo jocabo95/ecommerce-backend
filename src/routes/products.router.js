@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 
     const productList = await productManager.getProducts(limit);
 
-    console.log("list: ", productList);
+    // console.log("list: ", productList);
 
     // render with handlebars
     res.render('index', {productList});
