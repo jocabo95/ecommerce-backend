@@ -1,9 +1,10 @@
 import { Router } from "express";
 import ProductManager from "../managers/productManager.js";
 import { validateProduct } from "../middlewares/validateAddedProduct.js";
+import { __dirname } from "../path.js";
 
 const router = Router();
-const productManager = new ProductManager("./src/db/products.json");
+const productManager = new ProductManager(`${__dirname}/db/products/js`);
 
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {
@@ -14,20 +15,8 @@ router.get("/", async (req, res) => {
     const productList = await productManager.getProducts(limit);
 
     // console.log("list: ", productList);
+    res.status(200).json(productList)
 
-    // render with handlebars
-    res.render('index', {productList});
-  } catch (error) {
-    res.status(500).json({ error: "could not get product list" });
-  }
-});
-
-// SHOW PRODUCTS REALTIME
-router.get("/realtimeProducts", async (req, res) => {
-  try {
-
-    // render with handlebars
-    res.render('realtimeProducts');
   } catch (error) {
     res.status(500).json({ error: "could not get product list" });
   }
