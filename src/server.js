@@ -5,8 +5,10 @@ import viewsRouter from "./routes/views.router.js";
 import handlebars from "express-handlebars";
 import { __dirname } from "./path.js";
 import { Server } from "socket.io";
+import ProductManager from "./managers/productManager.js";
 
 const app = express();
+const productManager = new ProductManager(`${__dirname}/db/products.json`)
 
 app.use(express.static(`${__dirname}/public`))
 
@@ -31,9 +33,27 @@ const httpServer = app.listen(port, () =>
 
 const socketServer = new Server(httpServer)
 
-socketServer.on("connection", (socket)=>{
+// SOCKET SerVER
+socketServer.on("connection", async (socket)=>{
+  try {
+    console.log(`new client ${socket.id}`);
 
-  console.log(`new client ${socket.id}`);
+    socket.on("disconnect", () => console.log(`client disconnected`));
+
+    // send all products to show realtime
+    socket.emit("productList", await productManager.getProducts());
+
+    // delete product in realtime
+    socket.on('deleteProduct', async (prodId)=>{
+      try {
+        await productManager.deleteProduct(prodId)
+      } catch (error) {
+        
+      }
+    })
 
 
+  } catch (error) {
+    console.log(error);
+  }
 })
