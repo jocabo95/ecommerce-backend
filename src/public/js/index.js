@@ -18,7 +18,7 @@ socket.on("productList", (productList) => {
           <p><b>Stock: </b>${el.stock}</p>
           <p><b>Code: </b>${el.code}</p>
           <br>
-          <button id="deleteProd-button" onclick="deleteProduct('${el.id}')">Delete</button>
+          <button onclick="deleteProduct('${el.id}')">Delete</button>
         </div>
       `;
   });
