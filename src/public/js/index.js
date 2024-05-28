@@ -42,5 +42,7 @@ document.getElementById('form').addEventListener("submit",(e)=>{
   }
 
   socket.emit('addProduct', (productData))
+
+  document.getElementById("form").reset();
 })
 

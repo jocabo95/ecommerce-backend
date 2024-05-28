@@ -56,6 +56,7 @@ socketServer.on("connection", async (socket)=>{
     // add products
     socket.on('addProduct', async (prodInfo)=>{
       await productManager.addProducts(prodInfo)
+      document.getElementById("form").reset();
     })
 
 
