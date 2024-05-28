@@ -28,4 +28,19 @@ socket.on("productList", (productList) => {
   document.getElementById('products-container').innerHTML= productCardList
 });
 
+// create product
+document.getElementById('form').addEventListener("submit",(e)=>{
+  e.preventDefault()
+
+  const productData = {
+    title: document.getElementById('title').value,
+    description: document.getElementById('description').value,
+    category: document.getElementById('category').value,
+    price: document.getElementById('price').value,
+    code: document.getElementById('code').value,
+    stock: document.getElementById('stock').value,
+  }
+
+  socket.emit('addProduct', (productData))
+})
 

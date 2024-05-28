@@ -53,6 +53,12 @@ socketServer.on("connection", async (socket)=>{
     })
 
 
+    // add products
+    socket.on('addProduct', async (prodInfo)=>{
+      await productManager.addProducts(prodInfo)
+    })
+
+
   } catch (error) {
     console.log(error);
   }
