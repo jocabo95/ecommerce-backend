@@ -21,10 +21,9 @@ router.get('/products', async(req, res)=>{
 // SHOW PRODUCTS REALTIME
 router.get("/realtimeProducts", async (req, res) => {
   try {
-
     res.render('realtimeProducts');
   } catch (error) {
-    res.status(500).json({ error: "could not get product list" });
+    res.status(500).json({ error: "could not get product list in real time" });
   }
 });
 
