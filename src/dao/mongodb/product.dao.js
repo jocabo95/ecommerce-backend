@@ -1,25 +1,28 @@
 import { ProductModel } from "./models/product.model.js";
 
 export default class ProductDaoMongoDb {
-  async getAll(page = 1, limit=10, title, sort) {
+  async getAll(page = 1, limit = 10, title, sort, category) {
     try {
+      // determine if prods will be filtered by title in paginate
+      const filterByTitle = title ? { title: title } : {};
+      const filterByCategory = category ? {category: category} : {}
 
-      // determine if filter will be done in paginate
-      const filter = title ? { title: title } : {};
+      const filter = {...filterByTitle, ...filterByCategory}
 
       let sortOrder = {};
 
-      // determine if sort will be sac or desc
+      // determine if sort will be asc or desc
       if (sort) {
         sortOrder.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
       }
 
+      // getAll
       const productList = await ProductModel.paginate(filter, {
         page,
         limit,
-        sort:  sortOrder ,
+        sort: sortOrder,
       });
-      
+
       return productList;
     } catch (error) {
       console.log("getProducts()= couldnt get products", error);

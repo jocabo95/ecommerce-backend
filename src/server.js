@@ -38,7 +38,7 @@ const httpServer = app.listen(port, () =>
 
 const socketServer = new Server(httpServer)
 
-// SOCKET SerVER
+// SOCKET SERVER
 socketServer.on("connection", async (socket)=>{
   try {
     console.log(`new client ${socket.id}`);

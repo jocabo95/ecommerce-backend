@@ -2,9 +2,8 @@ import * as services from '../services/product.services.js'
 
 export const getAll =async(req, res)=>{
   try {
-
-    const { page, limit, title, sort } = req.query;
-    const productList = await services.getAll(page, limit, title, sort)
+    const { page, limit, title, sort, category } = req.query;
+    const productList = await services.getAll(page, limit, title, sort, category)
 
     // pagination links
     const nextLink = productList.hasNextPage ? `http://localhost:8080/products?page=${productList.nextPage}` : null;
