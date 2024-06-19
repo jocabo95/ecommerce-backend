@@ -2,87 +2,75 @@ import { Router } from "express";
 import ProductManager from "../managers/productManager.js";
 import { validateProduct } from "../middlewares/validateAddedProduct.js";
 import { __dirname } from "../path.js";
+import * as controller from '../controllers/product.controller.js'
 
 const router = Router();
 const productManager = new ProductManager(`${__dirname}/db/products/js`);
 
 // GET ALL PRODUCTS
-router.get("/", async (req, res) => {
-  try {
-    // limit refers to # of products that will be displayed in client
-    const { limit } = req.query;
+router.get("/", controller.getAll);
 
-    const productList = await productManager.getProducts(limit);
+// // GET PRODUCT BY ID
+// router.get("/:prodId", async (req, res) => {
+//   try {
+//     const { prodId } = req.params;
+//     const product = await productManager.getProductById(prodId);
 
-    // console.log("list: ", productList);
-    res.status(200).json(productList)
+//     // act weather product exists or not
+//     if (product) {
+//       res.status(200).json(product);
+//     }
+//   } catch (error) {
+//     res.status(500).json({ error: `could not get product` });
+//   }
+// });
 
-  } catch (error) {
-    res.status(500).json({ error: "could not get product list" });
-  }
-});
+// // ADD PRODUCT
+// router.post("/", validateProduct, async (req, res) => {
+//   try {
+//     const productInfo = req.body;
+//     const newProduct = await productManager.addProducts(productInfo);
+//     res.status(200).json(newProduct);
+//   } catch (error) {
+//     res.status(500).json({ error: `could not add product` });
+//   }
+// });
 
-// GET PRODUCT BY ID
-router.get("/:prodId", async (req, res) => {
-  try {
-    const { prodId } = req.params;
-    const product = await productManager.getProductById(prodId);
+// // UPDATE PRODUCT
+// router.put("/:prodId", async (req, res) => {
+//   try {
+//     const { prodId } = req.params;
+//     const newProperties = req.body;
 
-    // act weather product exists or not
-    if (product) {
-      res.status(200).json(product);
-    }
-  } catch (error) {
-    res.status(500).json({ error: `could not get product` });
-  }
-});
+//     const updatedProduct = await productManager.updateProduct(
+//       prodId,
+//       newProperties
+//     );
 
-// ADD PRODUCT
-router.post("/", validateProduct, async (req, res) => {
-  try {
-    const productInfo = req.body;
-    const newProduct = await productManager.addProducts(productInfo);
-    res.status(200).json(newProduct);
-  } catch (error) {
-    res.status(500).json({ error: `could not add product` });
-  }
-});
+//     if (updatedProduct) {
+//       res.status(200).json(updatedProduct);
+//     }
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ error: `could not update product with id ${prodId}` });
+//   }
+// });
 
-// UPDATE PRODUCT
-router.put("/:prodId", async (req, res) => {
-  try {
-    const { prodId } = req.params;
-    const newProperties = req.body;
+// // REMOVE PRODUCT
+// router.delete("/:prodId", async (req, res) => {
+//   try {
+//     const { prodId } = req.params;
+//     const newProductList = await productManager.deleteProduct(prodId);
 
-    const updatedProduct = await productManager.updateProduct(
-      prodId,
-      newProperties
-    );
-
-    if (updatedProduct) {
-      res.status(200).json(updatedProduct);
-    }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: `could not update product with id ${prodId}` });
-  }
-});
-
-// REMOVE PRODUCT
-router.delete("/:prodId", async (req, res) => {
-  try {
-    const { prodId } = req.params;
-    const newProductList = await productManager.deleteProduct(prodId);
-
-    if (newProductList) {
-      res.status(200).json(newProductList);
-    }
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: `could not detele product with id ${prodId}` });
-  }
-});
+//     if (newProductList) {
+//       res.status(200).json(newProductList);
+//     }
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ error: `could not detele product with id ${prodId}` });
+//   }
+// });
 
 export default router;
