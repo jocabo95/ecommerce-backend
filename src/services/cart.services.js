@@ -22,7 +22,7 @@ export const getAll = async()=>{
 
 export const getCartById = async (id) => {
   try {
-    return await cartDao.getById(id);
+    return await cartDao.getCartById(id);
   } catch (error) {
     console.log(error);
   }

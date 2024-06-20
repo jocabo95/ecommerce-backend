@@ -1,11 +1,9 @@
 import { Router } from "express";
-import ProductManager from "../managers/productManager.js";
 import { validateProduct } from "../middlewares/validateAddedProduct.js";
 import { __dirname } from "../path.js";
 import * as controller from '../controllers/product.controller.js'
 
 const router = Router();
-const productManager = new ProductManager(`${__dirname}/db/products/js`);
 
 // GET ALL PRODUCTS
 router.get("/", controller.getAll);
