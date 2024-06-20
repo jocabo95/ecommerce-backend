@@ -1,4 +1,4 @@
-import { CartModel } from "./models/cart.model";
+import { CartModel } from "./models/cart.model.js";
 
 export default class CartDaoMongoDb {
   async create() {
@@ -19,15 +19,15 @@ export default class CartDaoMongoDb {
     }
   }
 
-  async getById(id) {
+  async getCartById(id) {
     try {
-      return await CartModel.findById(id).populate("products.products");
+      return await CartModel.findById(id).populate("products.product");
     } catch (error) {
       console.log(error);
     }
   }
 
-  async delete(id) {
+  async removeCart(id) {
     try {
       return await CartModel.findByIdAndDelete(id);
     } catch (error) {
@@ -37,6 +37,10 @@ export default class CartDaoMongoDb {
 
   async searchProductinCart(cartId, prodId) {
     try {
+      return await CartModel.findOne({
+        _id: cartId,
+        products: {$elemMatch: {product: prodId}}
+      })
     } catch (error) {
       console.log(error);
     }
@@ -44,6 +48,22 @@ export default class CartDaoMongoDb {
 
   async addProdToCart(cartId, prodId) {
     try {
+      const prodInCart = await this.searchProductinCart(cartId, prodId)
+
+      // if product already exists in cart or if it does not
+      if(prodInCart){
+        return await CartModel.findOneAndUpdate(
+          {_id: cartId, 'products.product': prodId},
+          {$set: {'products.$.quantity': prodInCart.products[0].quantity + 1}},
+          {new: true}
+        )
+      }else{
+        return await CartModel.findOneAndUpdate(
+          {_id: cartId},
+          {$push: {products: {product: prodId}}},
+          {new: true}
+        )
+      }
     } catch (error) {
       console.log(error);
     }
