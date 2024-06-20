@@ -57,14 +57,8 @@ export default class ProductDaoMongoDb {
 
   async getProductById(id) {
     try {
-      const productList = await this.getProducts();
-      const desiredProduct = productList.find((el) => el.id === id);
-
-      if (desiredProduct) {
-        return desiredProduct;
-      } else {
-        return null;
-      }
+      const product = await ProductModel.findById(id)
+      return product
     } catch (error) {
       console.log(`product with id ${id} doesnt exist`, error);
     }

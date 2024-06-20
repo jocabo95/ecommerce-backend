@@ -8,6 +8,7 @@ import { Server } from "socket.io";
 import ProductManager from "./managers/productManager.js";
 import "dotenv/config";
 import initMongoDb from './dao/mongodb/connection.js'
+import morgan from 'morgan'
 
 const app = express();
 const productManager = new ProductManager(`${__dirname}/db/products.json`)
@@ -21,6 +22,7 @@ app.set("view engine", "handlebars");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
 
 // routes
 app.use("/products", productsRouter);

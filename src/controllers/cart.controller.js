@@ -30,6 +30,19 @@ export const getCartById = async(req, res)=>{
   }
 }
 
+export const updateCart = async(req, res) =>{
+  try {
+    const {cartId}= req.params
+    
+    const updatedCart = await service.updateCart(cartId, req.body)
+
+    if(!updatedCart) res.status(404).json({msg: 'could not update cart'})
+    else res.status(200).json(updatedCart)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const removeCart = async (req, res) => {
   try {
     const { id } = req.params;
@@ -43,13 +56,58 @@ export const removeCart = async (req, res) => {
 
 export const addProdToCart = async (req, res) => {
   try {
-    const { idCart } = req.params;
-    const { idProd } = req.params;
+    const { cartId } = req.params;
+    const { prodId } = req.params;
 
-    const product = await service.addProdToCart(idCart, idProd);
+    const product = await service.addProdToCart(cartId, prodId);
+    console.log('cartId= ', cartId);
     if (!product) res.json({ msg: "couldnt add product to cart" });
     else res.json(product);
   } catch (error) {
     console.log(error);
   }
 };
+
+export const removeProdFromCart = async(req, res)=>{
+  try {
+    const {cartId}=req.params
+    const {prodId}=req.params
+    
+    const newCart = await service.removeProdFromCart(cartId, prodId)
+
+    if(!newCart) res.json({msg: 'Could not delete product form cart'});
+    else res.status(200).json({ msg: `product ${prodId} deleted from cart` });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const updateQuantity = async(req, res) =>{
+  try {
+    const {cartId} = req.params;
+    const {prodId} = req.params
+    const {quantity} = req.body
+
+    const newCart = await service.updateQuantity(cartId, prodId, quantity);
+
+    console.log('cartid: ', cartId);
+    console.log('prodid: ', prodId);
+    console.log('req.body: ', req.body);
+    if (!newCart) res.json({ msg: `Could not modify product (${prodId}) quantity` });
+    else res.status(200).json(newCart);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const clearCart = async(req, res) =>{
+  try {
+    const { cartId } = req.params;
+    const newCart = await service.clearCart(cartId)
+    if (!newCart)
+      res.json({ msg: `Could not clear cart` });
+    else res.status(200).json(newCart);
+  } catch (error) {
+    console.log(error);
+  }
+}

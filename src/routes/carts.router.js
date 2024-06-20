@@ -14,4 +14,16 @@ router.get('/:cartId', controller.getCartById)
 // ADD PRODUCT TO CART
 router.post('/:cartId/product/:prodId', controller.addProdToCart)
 
+// UPDATE CART
+router.put('/:cartId', controller.updateCart)
+
+// DELETE PRODUCT FROM CART
+router.delete("/:cartId/products/:prodId", controller.removeProdFromCart);
+
+// UPDATE QUANTITY
+router.put("/:cartId/products/:prodId", controller.updateQuantity);
+
+// DELETE CART
+router.delete("/:cartId", controller.clearCart)
+
 export default router;
