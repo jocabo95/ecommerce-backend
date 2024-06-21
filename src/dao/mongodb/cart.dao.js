@@ -56,15 +56,18 @@ export default class CartDaoMongoDb {
 
   async addProdToCart(cartId, prodId) {
     try {
-      const prodInCart = await this.searchProductinCart(cartId, prodId);
 
-      // if product already exists in cart or if it does not
-      if (prodInCart) {
+      // check if product exists in cart
+      const checkProdInCart = await this.searchProductinCart(cartId, prodId)
+
+      // if product exists => quantity** ELSE add product
+      if (checkProdInCart) {
+
         return await CartModel.findOneAndUpdate(
           { _id: cartId, "products.product": prodId },
           {
             $set: {
-              "products.$.quantity": prodInCart.products[0].quantity + 1,
+              "products.$.quantity": checkProdInCart.products[0].quantity + 1,
             },
           },
           { new: true }

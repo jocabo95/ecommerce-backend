@@ -47,13 +47,14 @@ export const removeCart = async(id)=>{
 
 export const addProdToCart = async (cartId, prodId) => {
   try {
+
+    // check that cart already exists
     const existCart = await getCartById(cartId);
-    console.log('existCart= ', existCart);
     if (!existCart) return null;
 
-    const existProd = await prodDao.getProductById(prodId);
-    console.log('existsProd= ', existProd);
-    if (!existProd) return null;
+    // check that product exists in db
+    const checkProdInDb = await prodDao.getProductById(prodId)
+    if(!checkProdInDb) return null
 
     return await cartDao.addProdToCart(cartId, prodId);
   } catch (error) {
@@ -63,14 +64,12 @@ export const addProdToCart = async (cartId, prodId) => {
 
 export const removeProdFromCart = async (cartId, prodId) => {
   try {
-
     // check that cart exists
     const checkCart = await cartDao.getCartById(cartId)
     if(!checkCart) return null
     
     // check prod exists in cart
     const checkProduct = await cartDao.searchProductinCart(cartId, prodId)
-
     if(!checkProduct) return null
 
     return await cartDao.removeProdFromCart(cartId, prodId);
@@ -88,7 +87,6 @@ export const updateQuantity = async (cartId, prodId, quantity) => {
 
     // check prod exists in cart
     const checkProduct = await cartDao.searchProductinCart(cartId, prodId);
-
     if (!checkProduct) return null;
 
     return await cartDao.updateQuantity(cartId, prodId, quantity);

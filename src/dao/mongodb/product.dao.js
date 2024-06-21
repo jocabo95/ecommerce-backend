@@ -3,11 +3,11 @@ import { ProductModel } from "./models/product.model.js";
 export default class ProductDaoMongoDb {
   async getAll(page = 1, limit = 10, title, sort, category) {
     try {
-      // determine if prods will be filtered by title in paginate
+      // determine if prods will be filtered by title/category in paginate
       const filterByTitle = title ? { title: title } : {};
-      const filterByCategory = category ? {category: category} : {}
+      const filterByCategory = category ? { category: category } : {};
 
-      const filter = {...filterByTitle, ...filterByCategory}
+      const filter = { ...filterByTitle, ...filterByCategory };
 
       let sortOrder = {};
 
@@ -16,39 +16,27 @@ export default class ProductDaoMongoDb {
         sortOrder.price = sort === "asc" ? 1 : sort === "desc" ? -1 : null;
       }
 
-      // getAll
-      const productList = await ProductModel.paginate(filter, {
+      return await ProductModel.paginate(filter, {
         page,
         limit,
         sort: sortOrder,
       });
-
-      return productList;
     } catch (error) {
       console.log("getProducts()= couldnt get products", error);
     }
   }
 
-  async addProducts(productInfo) {
+  async create(productInfo) {
     try {
-      // create new product
-      let newProduct = await productsModel.create(productInfo);
+      // check if product already exists using title
+      const checkProduct = await ProductModel.findOne({
+        title: productInfo.title,
+      });
 
-      // check new product does not exist
-      const checkProductExistance = productList.find(
-        (el) => el.title === newProduct.title
-      );
-
-      // if doesnt exist, push to product list
-      if (!checkProductExistance) {
-        productList.push(newProduct);
-
-        // write new product list in path
-        await fs.promises.writeFile(this.path, JSON.stringify(productList));
-
-        return newProduct;
+      if (!checkProduct) {
+        return await ProductModel.create(productInfo);
       } else {
-        console.log("product title already exists");
+        return null;
       }
     } catch (error) {
       console.log(`could not add product`, error);
@@ -57,69 +45,28 @@ export default class ProductDaoMongoDb {
 
   async getProductById(id) {
     try {
-      const product = await ProductModel.findById(id)
-      return product
+      const product = await ProductModel.findById(id);
+      return product;
     } catch (error) {
       console.log(`product with id ${id} doesnt exist`, error);
     }
   }
 
-  async deleteProduct(id) {
+  async deleteProduct(prodId) {
     try {
-      const productList = await this.getProducts();
-      const productToDelete = await this.getProductById(id);
-
-      // if product exists, delete
-      if (productToDelete) {
-        const newProductList = productList.filter((el) => el.id !== id);
-
-        await fs.promises.writeFile(this.path, JSON.stringify(newProductList));
-        return newProductList;
-      } else {
-        return null;
-      }
+      return await ProductModel.findByIdAndDelete(prodId);
     } catch (error) {
       console.log("could not delete product", error);
     }
   }
 
-  async updateProduct(id, newProperties) {
+  async updateProduct(prodId, prodInfo) {
     try {
-      const productList = await this.getProducts();
-      const productToEdit = await this.getProductById(id);
-
-      if (productToEdit) {
-        //modify product
-        let modifiedProduct = {
-          ...productToEdit,
-          ...newProperties,
-        };
-
-        // delete desired product from prod list
-        // modify only product /vs/ modify one of several products
-        let filteredProductList;
-        if (productList.length === 1) {
-          filteredProductList = [];
-        } else {
-          filteredProductList = productList.filter((el) => el.id !== id);
-        }
-
-        // update product list with new version
-        filteredProductList.push(modifiedProduct);
-
-        await fs.promises.writeFile(
-          this.path,
-          JSON.stringify(filteredProductList)
-        );
-        return filteredProductList;
-      } else {
-        console.log(
-          `product with id ${id} cant be edited because it does not exist`
-        );
-        return null;
-      }
+      return await ProductModel.findByIdAndUpdate({ _id: prodId }, prodInfo, {
+        new: true,
+      });
     } catch (error) {
-      console.log(`could not modify product with id= ${id}`, error);
+      console.log(error);
     }
   }
 }
